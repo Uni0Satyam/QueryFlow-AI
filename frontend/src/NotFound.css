@@ -1,0 +1,26 @@
+.section {
+    background-color: #212121;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.animation {
+    height: 30rem;
+    padding: 2rem;
+}
+
+.textDiv{
+    text-align: center;
+    font-size: xx-large;
+}
+
+.link{
+  text-decoration: none;
+  font-size: large;
+}
+
+.link:hover{
+  text-decoration: underline;
+}

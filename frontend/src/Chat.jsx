@@ -1,10 +1,67 @@
-import React from 'react'
+import './Chat.css'
+import { useContext, useState, useEffect } from 'react'
+import { MyContext } from './MyContext';
+import ReactMarkdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/github-dark.css';
 
 const Chat = () => {
+  const { newChat, prevChats, reply } = useContext(MyContext);
+  const [latestReply, setLatestReply] = useState(null);
+
+  useEffect(() => {
+    if (reply === null) {
+      setLatestReply(null);
+      return;
+    }
+
+    if (!prevChats?.length) return;
+
+    const content = reply.split(" ");
+
+    let indx = 0;
+    const interval = setInterval(() => {
+      setLatestReply(content.slice(0, indx + 1).join(" "));
+
+      indx++;
+      if (content.length <= indx) clearInterval(interval);
+    }, 40)
+
+    return () => clearInterval(interval);
+
+  }, [prevChats, reply])
+
   return (
-    <div>
-      Chat
-    </div>
+    <>
+      {newChat && <h1>Start a new Chat</h1>}
+      <div className="chats">
+        {
+          prevChats?.slice(0, -1).map((chat, indx) =>
+            <div className={chat.role === "user" ? "userDiv" : "assitDiv"} key={indx}>
+              {
+                chat.role === "user" ? <p className='userMessage'>{chat.content}</p> : <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{chat.content}</ReactMarkdown>
+              }
+            </div>
+          )
+        }
+
+        {
+          prevChats.length > 0 && (
+            <>
+              {
+                latestReply !== null ? (
+                  <div className="assitDiv" key={"typing"} >
+                    <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{latestReply}</ReactMarkdown>
+                  </div>
+                ) : <div className="assitDiv" key={"notTyping"} >
+                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{prevChats[prevChats.length - 1].content}</ReactMarkdown>
+                </div>
+              }
+            </>
+          )
+        }
+      </div>
+    </>
   )
 }
 
