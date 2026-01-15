@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import './Auth.css';
 import Logo from '/logo.png'
-import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 export default function AuthPage() {
+
   const [mode, setMode] = useState("login");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
   let [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
   });
+
+  const { handleSignup, handleLogin } = useContext(AuthContext);
 
   const handleInputChange = (e) => {
     setFormData((currData) => {
@@ -17,27 +23,26 @@ export default function AuthPage() {
     });
   }
 
-  const handleSignup = async() => {
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    }
-
+  let handleAuth = async () => {
     try {
-      const response = await fetch('http://localhost:8080/auth/signup', options);
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.log(error);
+      setError("");
+      if (mode === "login") {
+        let result = await handleLogin(formData);
+        setMessage(result);
+      }
+      if (mode === "signup") {
+        let result = await handleSignup(formData);
+        setMessage(result);
+      }
+    } catch (e) {
+      setMessage("");
+      setError(e);
     }
   }
+
   return (
     <div className="page">
-      <div className="card">
+      <div className="card" >
         <img
           src={Logo}
           alt="logo"
@@ -47,11 +52,21 @@ export default function AuthPage() {
         <h1 className="oauth-heading">{mode === "login" ? "Welcome back" : "Create your account"}</h1>
 
         {mode === "signup" && (
-          <input type="email" placeholder="Enter email" className="input" name="email" value={formData.email} onChange={handleInputChange} required />
+          <input type="email" placeholder="Enter email" className="input" name="email" value={formData.email} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
         )}
-        <input type="text" placeholder="Username" className="input" name="username" value={formData.username} onChange={handleInputChange} required />
-        <input type="password" placeholder="Password" className="input" name="password" value={formData.password} onChange={handleInputChange} required />
-        <div className="primary" onClick={handleSignup}>Continue</div>
+        <input type="text" placeholder="Username" className="input" name="username" value={formData.username} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
+        <input type="password" placeholder="Password" className="input" name="password" value={formData.password} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
+        {error &&
+          <div className="err-box">
+            <p className="err-msg"><i className="fa-solid fa-circle-exclamation" style={{ marginRight: "1rem" }}></i>{error}</p>
+          </div>
+        }
+        {message &&
+          <div className="success-box">
+            <p className="sucess-msg"><i className="fa-solid fa-check" style={{ marginRight: "1rem" }}></i>{message}</p>
+          </div>
+        }
+        <div className="primary" onClick={handleAuth}>Continue</div>
 
         <div className="divider">
           <span>OR</span>

@@ -91,7 +91,7 @@
 }
 
 .oauth:hover {
-    background: rgba(255,255,255,0.35);
+    background: rgba(255, 255, 255, 0.35);
 }
 
 .switch {
@@ -124,4 +124,32 @@
 
 .terms a:hover {
     text-decoration: underline;
+}
+
+.err-box {
+    padding: 0.4rem 1rem 0.4rem 1rem;
+    background-color: rgba(255, 0, 0, 0.225);
+    border-radius: 2rem;
+    border: 1px solid white;
+    width: 100%;
+}
+
+.err-msg {
+    color: white;
+    margin: 0;
+    font-size: small;
+}
+
+.success-box{
+    padding: 0 1rem 0 1rem;
+    background-color: rgba(0, 128, 0, 0.225);
+    border-radius: 2rem;
+    border: 1px solid white;
+    width: 100%;
+}
+
+.success-msg{
+    color: white;
+    margin: 0;
+    font-size: small;
 }

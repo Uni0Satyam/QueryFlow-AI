@@ -16,6 +16,8 @@ const MessageSchema = new mongoose.Schema({
     }
 })
 
+const Message =  mongoose.model("Message",MessageSchema);
+
 const ThreadSchema = new mongoose.Schema({
     threadId: {
         type: String,
@@ -37,4 +39,6 @@ const ThreadSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model("Thread",ThreadSchema);
+const Thread = mongoose.model("Thread",ThreadSchema);
+
+export { Message, Thread };

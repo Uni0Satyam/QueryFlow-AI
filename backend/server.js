@@ -5,8 +5,6 @@ import mongoose from "mongoose";
 import chatRoutes from './routes/chat.js';
 import userRoutes from './routes/user.js';
 import session from 'express-session';
-import passport from "passport";
-import User from "./models/User.js";
 
 const app = express();
 const PORT = 8080;
@@ -15,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 const sessionOptions = {
-    secret: "SecretCode",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -26,13 +24,6 @@ const sessionOptions = {
 };
 
 app.use(session(sessionOptions));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 app.use("/api", chatRoutes);
 app.use("/auth", userRoutes);

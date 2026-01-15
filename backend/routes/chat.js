@@ -1,5 +1,5 @@
 import express from 'express';
-import Thread from '../models/Thread.js'
+import {Thread} from '../models/Thread.js'
 import getResponse from '../utils/ai.js'
 
 const router = express.Router();
