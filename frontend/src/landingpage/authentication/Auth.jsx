@@ -2,12 +2,14 @@ import { useContext, useState } from "react";
 import './Auth.css';
 import Logo from '/logo.png'
 import { AuthContext } from "../../context/AuthContext";
+import { BeatLoader } from 'react-spinners';
 
 export default function AuthPage() {
 
   const [mode, setMode] = useState("login");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   let [formData, setFormData] = useState({
     username: "",
@@ -24,6 +26,7 @@ export default function AuthPage() {
   }
 
   let handleAuth = async () => {
+    setLoading(true);
     try {
       setError("");
       if (mode === "login") {
@@ -38,6 +41,7 @@ export default function AuthPage() {
       setMessage("");
       setError(e);
     }
+    setLoading(false);
   }
 
   return (
@@ -66,7 +70,7 @@ export default function AuthPage() {
             <p className="sucess-msg"><i className="fa-solid fa-check" style={{ marginRight: "1rem" }}></i>{message}</p>
           </div>
         }
-        <div className="primary" onClick={handleAuth}>Continue</div>
+        <div className="primary" onClick={handleAuth}>Continue <BeatLoader color='white' loading={loading}></BeatLoader></div>
 
         <div className="divider">
           <span>OR</span>
