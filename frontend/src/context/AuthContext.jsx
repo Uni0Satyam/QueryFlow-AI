@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleSignup = async (formData) => {
         try {
-            const res = await fetch('http://localhost:8080/auth/signup', {
+            const res = await fetch('https://queryflow-ai-backend.onrender.com/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async (formData) => {
         try {
-            const res = await fetch('http://localhost:8080/auth/login', {
+            const res = await fetch('https://queryflow-ai-backend.onrender.com/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
