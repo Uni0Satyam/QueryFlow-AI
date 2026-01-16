@@ -4,7 +4,7 @@ import { MyContext } from "../../context/MyContext";
 import { v4 as uuidv4 } from 'uuid';
 
 const SideBar = () => {
-  const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats ,getAllThreads } = useContext(MyContext);
+  const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats ,getAllThreads, isSidebarOpen, toggleSidebar } = useContext(MyContext);
 
   const token = localStorage.getItem("token");
 
@@ -54,10 +54,13 @@ const SideBar = () => {
   };
 
   return (
-
-    <section className='sidebar'>
-      <button onClick={createNewChat}>
+    <section className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+      <button>
         <img src="/logo.png" alt="QueryFlow" className="logo" />
+        <i className="fa-solid fa-xmark" onClick={toggleSidebar}></i>
+      </button>
+      <button onClick={createNewChat}>
+        <p style={{margin: "0", fontWeight: "bold"}}>New Chat</p>
         <i className="fa-solid fa-pen-to-square"></i>
       </button>
 

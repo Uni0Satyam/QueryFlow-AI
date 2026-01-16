@@ -12,9 +12,14 @@ export const MyProvider = ({ children }) => {
     const [prevChats, setPrevChats] = useState([]);
     const [newChat, setNewChat] = useState(true);
     const [allThreads, setAllThreads] = useState([]);
+    const [isSidebarOpen, setSidebarOpen] = useState(false);
 
     const getAllThreads = async () => {
         await getAllThread(setAllThreads);
+    };
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!isSidebarOpen);
     };
 
     const providerValues = {
@@ -24,7 +29,8 @@ export const MyProvider = ({ children }) => {
         newChat, setNewChat,
         prevChats, setPrevChats,
         allThreads, setAllThreads,
-        getAllThreads
+        getAllThreads,toggleSidebar,
+        isSidebarOpen, setSidebarOpen
     };
 
     return (

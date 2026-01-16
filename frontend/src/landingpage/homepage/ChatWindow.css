@@ -123,3 +123,24 @@ input:focus {
     background-color: rgba(180, 180, 180, 0.1);
     border-radius: 6px;
 }
+
+@media (max-width: 768px){
+    .inputBox{
+        width: 85%;
+    }
+    #submit {
+        right: 35px;
+    }
+}
+
+@media (max-width: 425px){
+    .inputBox{
+        width: 85%;
+    }
+    #submit {
+        right: 20px;
+    }
+    .fa-angle-down{
+        display: none;
+    }
+}

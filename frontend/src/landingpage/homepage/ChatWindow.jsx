@@ -6,7 +6,7 @@ import { RingLoader } from 'react-spinners';
 import { AuthContext } from '../../context/AuthContext.jsx';
 
 const ChatWindow = () => {
-  const { prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat,getAllThreads } = useContext(MyContext);
+  const { prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, getAllThreads, toggleSidebar, isSidebarOpen } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,8 +67,9 @@ const ChatWindow = () => {
 
   return (
     <div className='chatWindow'>
-      <div className="navbar">
-        <span>QueryFlow <i className="fa-solid fa-angle-down"></i></span>
+      <div className="navbar"> 
+        <span onClick={toggleSidebar} style={{cursor: 'pointer'}}>{isSidebarOpen ? (<i className="fa-solid fa-xmark"></i>) : (<i className="fa-solid fa-bars"></i>)}</span>
+        <span>QueryFlow </span>
         <div className="userIconDiv" onClick={handleProfileClick}>
           <span className='userIcon'><i className="fa-solid fa-user"></i></span>
         </div>
