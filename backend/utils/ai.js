@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-const getResponse = async(message) => {
+const getResponse = async (message) => {
     const options = {
         method: 'POST',
         headers: {
@@ -18,6 +18,9 @@ const getResponse = async(message) => {
     try {
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', options);
         const data = await response.json();
+        if (!data.choices || !data.choices.length) {
+            console.error("AI ERROR:", data);
+        }
         return data.choices[0].message.content;
     } catch (err) {
         console.log(err);

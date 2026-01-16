@@ -13,10 +13,11 @@ const MessageSchema = new mongoose.Schema({
     timestamp: {
         type: Date,
         default: Date.now,
-    }
+    },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 })
 
-const Message =  mongoose.model("Message",MessageSchema);
+const Message = mongoose.model("Message", MessageSchema);
 
 const ThreadSchema = new mongoose.Schema({
     threadId: {
@@ -36,9 +37,10 @@ const ThreadSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 });
 
-const Thread = mongoose.model("Thread",ThreadSchema);
+const Thread = mongoose.model("Thread", ThreadSchema);
 
 export { Message, Thread };

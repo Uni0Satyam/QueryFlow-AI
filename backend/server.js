@@ -2,6 +2,7 @@ import express from "express";
 import 'dotenv/config';
 import cors from 'cors';
 import mongoose from "mongoose";
+import threadRoutes from './routes/thread.js';
 import chatRoutes from './routes/chat.js';
 import userRoutes from './routes/user.js';
 import session from 'express-session';
@@ -25,7 +26,8 @@ const sessionOptions = {
 
 app.use(session(sessionOptions));
 
-app.use("/api", chatRoutes);
+app.use("/api", threadRoutes);
+app.use("/v1", chatRoutes);
 app.use("/auth", userRoutes);
 
 const connectDb = async () => {
