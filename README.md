@@ -150,8 +150,8 @@ npm run dev
 
 | Method | Endpoint         | Description   |
 | ------ | ---------------- | ------------- |
-| POST   | /api/auth/signup | Register user |
-| POST   | /api/auth/login  | Login user    |
+| POST   | /auth/signup | Register user |
+| POST   | /auth/login  | Login user    |
 | POST   | /v1/chat        | Send message  |
 | GET    | /api/thread/:id  | Get thread    |
 | GET    | /api/thread/ | Get all thread    |
