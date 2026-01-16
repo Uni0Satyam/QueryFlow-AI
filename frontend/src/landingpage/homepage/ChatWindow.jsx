@@ -1,14 +1,18 @@
 import './ChatWindow.css';
-import Chat from './Chat.jsx'
-import { MyContext } from './MyContext.jsx';
+import Chat from '../../Chat.jsx'
+import { MyContext } from '../../context/MyContext.jsx';
 import { useContext, useEffect, useState } from 'react';
 import { RingLoader } from 'react-spinners';
+import { AuthContext } from '../../context/AuthContext.jsx';
 
 const ChatWindow = () => {
-  const { prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, setCurrThreadId } = useContext(MyContext);
+  const { prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat,getAllThreads } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const { handleLogout } = useContext(AuthContext);
+
+  const token = localStorage.getItem("token");
   const getReply = async () => {
     setLoading(true);
     setNewChat(null);
@@ -16,21 +20,29 @@ const ChatWindow = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         message: prompt,
-        threadId: currThreadId
+        threadId: currThreadId,
       }),
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/chat', options);
+      const response = await fetch('http://localhost:8080/v1/chat', options);
+
+      if (response.status === 401) {
+        handleLogout();
+        return;
+      }
+
       const res = await response.json();
       setReply(res.reply);
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
+    await getAllThreads();
   }
 
   useEffect(() => {
@@ -50,8 +62,8 @@ const ChatWindow = () => {
   }, [reply]);
 
   const handleProfileClick = () => {
-        setIsOpen(!isOpen);
-    }
+    setIsOpen(!isOpen);
+  }
 
   return (
     <div className='chatWindow'>
@@ -64,9 +76,7 @@ const ChatWindow = () => {
       {
         isOpen &&
         <div className="dropDown">
-          <div className="dropDownItem"><i className="fa-solid fa-gear"></i> Settings</div>
-          <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
-          <div className="dropDownItem"><i className="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
+          <div className="dropDownItem" onClick={(e) => handleLogout()}><i className="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
         </div>
       }
       <Chat></Chat>
@@ -78,7 +88,7 @@ const ChatWindow = () => {
           <div id='submit' onClick={getReply}><i className="fa-solid fa-paper-plane"></i></div>
         </div>
         <p className='info'>
-          QueryFlow can make mistakes. Check important info. See Cookies Preferences.
+          QueryFlow can make mistakes. Check important info.
         </p>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import './NotFound.css';
 import { Player } from "@lottiefiles/react-lottie-player";
-import Lonely from "./animation/lonely404.json"
+import Lonely from "../../animation/lonely404.json"
 
 function NotFound() {
     return (

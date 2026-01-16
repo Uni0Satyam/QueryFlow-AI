@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }) => {
             if (res.status === httpStatus.OK) {
                 localStorage.setItem("token", data.token);
                 router("/");
-                return data.message;
             } else{
                 throw data.message;
             }
@@ -54,8 +53,13 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const handleLogout = async () => {
+        localStorage.removeItem("token");
+        router("/auth", { replace: true });
+    }
+
     const data = {
-        userData, setUserData, handleSignup, handleLogin
+        userData, setUserData, handleSignup, handleLogin, handleLogout
     }
 
     return (

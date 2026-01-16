@@ -1,23 +1,12 @@
 import "./SideBar.css";
 import { useContext, useEffect } from "react";
-import { MyContext } from "./MyContext";
+import { MyContext } from "../../context/MyContext";
 import { v4 as uuidv4 } from 'uuid';
 
 const SideBar = () => {
-  const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats } = useContext(MyContext);
+  const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats ,getAllThreads } = useContext(MyContext);
 
-  const getAllThreads = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/thread");
-      const res = await response.json();
-      const filteredData = res.map(thread => ({ 
-        threadId: thread.threadId, 
-        title: thread.title }));
-      setAllThreads(filteredData);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     getAllThreads();
@@ -35,7 +24,9 @@ const SideBar = () => {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
+      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const res = await response.json();
       setPrevChats(res);
       setNewChat(false);
@@ -47,7 +38,7 @@ const SideBar = () => {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, { method: "DELETE" });
+      const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, { method: "DELETE", Authorization: `Bearer ${token}` });
       const result = await response.json();
       alert(result.error);
 
@@ -73,7 +64,7 @@ const SideBar = () => {
       <ul className="history">
         {
           allThreads?.map((thread, indx) => (
-            <li key={indx} onClick={(e) => changeThread(thread.threadId)} className={thread.threadId === currThreadId ? "highlighted": ""}>{thread.title}
+            <li key={indx} onClick={(e) => changeThread(thread.threadId)} className={thread.threadId === currThreadId ? "highlighted" : ""}>{thread.title}
               <i className="fa-solid fa-trash"
                 onClick={(e) => {
                   e.stopPropagation();

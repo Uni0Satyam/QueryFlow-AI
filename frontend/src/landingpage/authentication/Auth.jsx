@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import './Auth.css';
 import Logo from '/logo.png'
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function AuthPage() {
 
