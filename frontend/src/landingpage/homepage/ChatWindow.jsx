@@ -29,7 +29,7 @@ const ChatWindow = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/v1/chat', options);
+      const response = await fetch('https://queryflow-ai-backend.onrender.com/v1/chat', options);
 
       if (response.status === 401) {
         handleLogout();
