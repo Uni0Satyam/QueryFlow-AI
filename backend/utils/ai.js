@@ -8,7 +8,7 @@ const getResponse = async (message) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model: 'meta-llama/llama-3.2-3b-instruct:free',
+            model: 'liquid/lfm-2.5-1.2b-instruct:free',
             messages: [
                 { role: 'user', content: message },
             ],
