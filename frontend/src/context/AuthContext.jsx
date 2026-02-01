@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import httpStatus from 'http-status';
+import servers from "../environment";
 
 export const AuthContext = createContext(null);
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleSignup = async (formData) => {
         try {
-            const res = await fetch('https://queryflow-ai-backend.onrender.com/auth/signup', {
+            const res = await fetch(`${servers.prod}/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async (formData) => {
         try {
-            const res = await fetch('https://queryflow-ai-backend.onrender.com/auth/login', {
+            const res = await fetch(`${servers.prod}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
             if (res.status === httpStatus.OK) {
                 localStorage.setItem("token", data.token);
-                router("/");
+                router("/home");
             } else{
                 throw data.message;
             }

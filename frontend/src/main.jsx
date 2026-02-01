@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import Notfound from './landingpage/error/NotFound.jsx'
 import Auth from './landingpage/authentication/Auth.jsx';
 import Protected from './Protected.jsx';
+import Home from './landingpage/homepage/home.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -12,7 +13,8 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <Routes>
         <Route path="/auth" element={<Auth />}></Route>
-        <Route path="/" element={<Protected />}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/home" element={<Protected />}></Route>
         <Route path="*" element={<Notfound />}></Route>
       </Routes>
     </AuthProvider>

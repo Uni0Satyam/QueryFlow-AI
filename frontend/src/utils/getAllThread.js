@@ -1,7 +1,9 @@
+import servers from "../environment";
+
 export const getAllThread = async (setAllThreads) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await fetch("https://queryflow-ai-backend.onrender.com/api/thread", {
+        const response = await fetch(`${servers.prod}/api/thread`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const res = await response.json();

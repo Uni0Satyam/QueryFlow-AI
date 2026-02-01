@@ -2,6 +2,7 @@ import "./SideBar.css";
 import { useContext, useEffect } from "react";
 import { MyContext } from "../../context/MyContext";
 import { v4 as uuidv4 } from 'uuid';
+import servers from "../../environment";
 
 const SideBar = () => {
   const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats ,getAllThreads, isSidebarOpen, toggleSidebar } = useContext(MyContext);
@@ -24,7 +25,7 @@ const SideBar = () => {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(`https://queryflow-ai-backend.onrender.com/api/thread/${newThreadId}`, {
+      const response = await fetch(`${servers.prod}/api/thread/${newThreadId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const res = await response.json();
@@ -38,7 +39,7 @@ const SideBar = () => {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(`https://queryflow-ai-backend.onrender.com/api/thread/${threadId}`, { method: "DELETE", Authorization: `Bearer ${token}` });
+      const response = await fetch(`${servers.prod}/api/thread/${threadId}`, { method: "DELETE", Authorization: `Bearer ${token}` });
       const result = await response.json();
       alert(result.error);
 

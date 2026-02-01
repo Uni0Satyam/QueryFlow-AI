@@ -4,6 +4,7 @@ import { MyContext } from '../../context/MyContext.jsx';
 import { useContext, useEffect, useState } from 'react';
 import { RingLoader } from 'react-spinners';
 import { AuthContext } from '../../context/AuthContext.jsx';
+import servers from '../../environment.js';
 
 const ChatWindow = () => {
   const { prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, getAllThreads, toggleSidebar, isSidebarOpen } = useContext(MyContext);
@@ -29,7 +30,7 @@ const ChatWindow = () => {
     }
 
     try {
-      const response = await fetch('https://queryflow-ai-backend.onrender.com/v1/chat', options);
+      const response = await fetch(`${servers.prod}/v1/chat`, options);
 
       if (response.status === 401) {
         handleLogout();

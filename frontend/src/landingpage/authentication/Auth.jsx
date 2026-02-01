@@ -56,10 +56,10 @@ export default function AuthPage() {
         <h1 className="oauth-heading">{mode === "login" ? "Welcome back" : "Create your account"}</h1>
 
         {mode === "signup" && (
-          <input type="email" placeholder="Enter email" className="input" name="email" value={formData.email} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
+          <input type="email" placeholder="Enter email" className="input" name="email" value={formData.email} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : ''} required />
         )}
-        <input type="text" placeholder="Username" className="input" name="username" value={formData.username} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
-        <input type="password" placeholder="Password" className="input" name="password" value={formData.password} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : '' } required />
+        <input type="text" placeholder="Username" className="input" name="username" value={formData.username} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : ''} required />
+        <input type="password" placeholder="Password" className="input" name="password" value={formData.password} onChange={handleInputChange} onKeyDown={(e) => e.key === 'Enter' ? handleAuth() : ''} required />
         {error &&
           <div className="err-box">
             <p className="err-msg"><i className="fa-solid fa-circle-exclamation" style={{ marginRight: "1rem" }}></i>{error}</p>
@@ -70,13 +70,17 @@ export default function AuthPage() {
             <p className="sucess-msg"><i className="fa-solid fa-check" style={{ marginRight: "1rem" }}></i>{message}</p>
           </div>
         }
-        <div className="primary" onClick={handleAuth}>Continue <BeatLoader color='white' loading={loading}></BeatLoader></div>
+        <div className="primary" onClick={handleAuth}
+          style={{cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.8 : 1}}>
+          {loading ? <BeatLoader color="white"></BeatLoader> : "Continue"}
+        </div>
 
         <div className="divider">
           <span>OR</span>
         </div>
 
         <button className="oauth google">Continue with Google<i className="fa-brands fa-google"></i></button>
+        <p>*Temporarily Unavailable</p>
 
         <p className="switch">
           {mode === "login" ? (
