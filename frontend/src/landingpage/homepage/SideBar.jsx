@@ -39,7 +39,10 @@ const SideBar = () => {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(`${servers.prod}/api/thread/${threadId}`, { method: "DELETE", Authorization: `Bearer ${token}` });
+      const response = await fetch(`${servers.prod}/api/thread/${threadId}`,
+        { method: "DELETE", 
+          headers:{ Authorization: `Bearer ${token}`,"Content-Type": "application/json"}
+        });
       const result = await response.json();
       alert(result.error);
 
