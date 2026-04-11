@@ -6,12 +6,17 @@ import threadRoutes from './routes/thread.js';
 import chatRoutes from './routes/chat.js';
 import userRoutes from './routes/user.js';
 import session from 'express-session';
+import helmet from 'helmet'
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 
+app.use(helmet());
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:8080", "https://queryflow-ai-64up.onrender.com"],
+    credentials: true,
+}));
 
 const sessionOptions = {
     secret: process.env.SESSION_SECRET,
