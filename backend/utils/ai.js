@@ -1,30 +1,40 @@
-import 'dotenv/config';
+import { OpenRouter } from "@openrouter/sdk";
+import "dotenv/config";
 
-const getResponse = async (message) => {
-    const options = {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${process.env.MODEL_API}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            model: 'liquid/lfm-2.5-1.2b-instruct:free',
-            messages: [
-                { role: 'user', content: message },
-            ],
-        }),
+const openrouter = new OpenRouter({
+  apiKey: process.env.MODEL_API,
+});
+
+const streamResponse = async (messages, onChunk) => {
+  const stream = await openrouter.chat.send({
+    model: "openrouter/free",
+    messages,
+    stream: true,
+    reasoning: { enabled: true },
+  });
+
+  let response = "";
+  let reasoningDetails = undefined;
+
+  for await (const chunk of stream) {
+    const delta = chunk.choices?.[0]?.delta;
+    if (!delta) continue;
+
+    const content = delta.content;
+    if (content) {
+      response += content;
+      onChunk(content);
     }
 
-    try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', options);
-        const data = await response.json();
-        if (!data.choices || !data.choices.length) {
-            console.error("AI ERROR:", data);
-        }
-        return data.choices[0].message.content;
-    } catch (err) {
-        console.log(err);
+    if (delta.reasoning_details) {
+      reasoningDetails = delta.reasoning_details;
     }
-}
+    if (chunk.choices?.[0]?.message?.reasoning_details) {
+      reasoningDetails = chunk.choices[0].message.reasoning_details;
+    }
+  }
 
-export default getResponse;
+  return { response, reasoningDetails };
+};
+
+export default streamResponse;

@@ -1,0 +1,251 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Design Tokens ────────────────────────────────────────── */
+:root {
+  --bg:            #0a0a0a;
+  --surface:       #111111;
+  --surface-2:     #1a1a1a;
+  --surface-3:     #222222;
+  --border:        rgba(255,255,255,0.07);
+  --border-hover:  rgba(255,255,255,0.14);
+  --text-primary:  #f0f0f0;
+  --text-secondary:#888888;
+  --text-tertiary: #555555;
+  --accent:        #6366f1;
+  --accent-dim:    rgba(99,102,241,0.12);
+  --accent-glow:   rgba(99,102,241,0.25);
+  --red-dim:       rgba(239,68,68,0.12);
+  --green-dim:     rgba(34,197,94,0.12);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.animate-fade-up   { animation: fadeUp 0.4s ease both; }
+.animate-fade-in   { animation: fadeIn 0.3s ease both; }
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* ── Ambient orb (landing hero) ───────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Glass nav ────────────────────────────────────────────── */
+.glass-nav {
+  background: rgba(10,10,10,0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Bento card ───────────────────────────────────────────── */
+.bento-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+.bento-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 24px var(--accent-dim);
+  transform: translateY(-2px);
+}
+
+/* ── Input base ───────────────────────────────────────────── */
+.qf-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.qf-input::placeholder { color: var(--text-tertiary); }
+.qf-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.btn-primary:hover  { opacity: 0.88; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.5rem;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+.btn-ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: var(--surface-2);
+}
+
+/* ── Tag / badge ──────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* ── Prose / markdown overrides ───────────────────────────── */
+.prose-chat {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
+.prose-chat p  { margin: 0 0 0.75em; }
+.prose-chat ul { margin: 0.5em 0 0.75em 1.25em; list-style: disc; }
+.prose-chat ol { margin: 0.5em 0 0.75em 1.25em; list-style: decimal; }
+.prose-chat li { margin-bottom: 0.25em; }
+.prose-chat h1, .prose-chat h2, .prose-chat h3 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1.25em 0 0.5em;
+}
+.prose-chat code {
+  font-size: 0.8em;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+}
+.prose-chat pre {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0.75em 0;
+}
+.prose-chat pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85em;
+}
+.prose-chat a  { color: var(--accent); text-decoration: underline; }
+.prose-chat blockquote {
+  border-left: 3px solid var(--border-hover);
+  padding-left: 1em;
+  color: var(--text-secondary);
+  margin: 0.75em 0;
+}
+
+/* ── Typing dots ──────────────────────────────────────────── */
+.typing-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--text-secondary);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-dot 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }

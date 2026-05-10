@@ -8,6 +8,8 @@ export const MyContext = createContext("");
 export const MyProvider = ({ children }) => {
     const [prompt, setPrompt] = useState("");
     const [reply, setReply] = useState(null);
+    const [streamReply, setStreamReply] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
     const [currThreadId, setCurrThreadId] = useState(uuidv4());
     const [prevChats, setPrevChats] = useState([]);
     const [newChat, setNewChat] = useState(true);
@@ -25,6 +27,8 @@ export const MyProvider = ({ children }) => {
     const providerValues = {
         prompt, setPrompt,
         reply, setReply,
+        streamReply, setStreamReply,
+        isGenerating, setIsGenerating,
         currThreadId, setCurrThreadId,
         newChat, setNewChat,
         prevChats, setPrevChats,

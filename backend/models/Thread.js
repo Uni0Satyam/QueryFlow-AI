@@ -14,6 +14,9 @@ const MessageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    reasoningDetails: {
+        type: mongoose.Schema.Types.Mixed,
+    },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 })
 

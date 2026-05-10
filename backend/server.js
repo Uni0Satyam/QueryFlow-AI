@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet());
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:8080", "https://queryflow-ai-64up.onrender.com"],
+    origin: ["http://localhost:5173", "https://queryflow-ai-64up.onrender.com"],
     credentials: true,
 }));
 

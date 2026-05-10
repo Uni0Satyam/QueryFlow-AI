@@ -1,68 +1,125 @@
-import './Chat.css'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react';
 import { MyContext } from './context/MyContext';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
 
 const Chat = () => {
-  const { newChat, prevChats, reply } = useContext(MyContext);
-  const [latestReply, setLatestReply] = useState(null);
+  const { newChat, prevChats, streamReply, isGenerating } = useContext(MyContext);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (reply === null) {
-      setLatestReply(null);
-      return;
-    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [prevChats, streamReply]);
 
-    if (!prevChats?.length) return;
-
-    const content = reply.split(" ");
-
-    let indx = 0;
-    const interval = setInterval(() => {
-      setLatestReply(content.slice(0, indx + 1).join(" "));
-
-      indx++;
-      if (content.length <= indx) clearInterval(interval);
-    }, 40)
-
-    return () => clearInterval(interval);
-
-  }, [prevChats, reply])
+  const hasMessages = prevChats && prevChats.length > 0;
 
   return (
-    <>
-      {newChat && <h1>Start a new Chat</h1>}
-      <div className="chats">
-        {
-          prevChats?.slice(0, -1).map((chat, indx) =>
-            <div className={chat.role === "user" ? "userDiv" : "assitDiv"} key={indx}>
-              {
-                chat.role === "user" ? <p className='userMessage'>{chat.content}</p> : <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{chat.content}</ReactMarkdown>
-              }
-            </div>
-          )
-        }
+    <div className="flex-1 overflow-y-auto w-full relative">
 
-        {
-          prevChats.length > 0 && (
-            <>
-              {
-                latestReply !== null ? (
-                  <div className="assitDiv" key={"typing"} >
-                    <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{latestReply}</ReactMarkdown>
+      {newChat && !hasMessages && (
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 animate-fade-up"
+          style={{ pointerEvents: "none" }}
+        >
+          <div
+            className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4"
+            style={{
+              background: "rgba(99,102,241,0.12)",
+              border: "1px solid rgba(99,102,241,0.2)",
+            }}
+          >
+            <i className="fa-solid fa-wand-magic-sparkles text-base" style={{ color: "#a5b4fc" }} />
+          </div>
+          <h2
+            className="text-2xl font-semibold tracking-tight mb-2"
+            style={{ letterSpacing: "-0.02em", color: "var(--text-primary)" }}
+          >
+            What can I help with?
+          </h2>
+          <p className="text-sm max-w-xs" style={{ color: "var(--text-secondary)" }}>
+            Start a conversation. Ask anything — I'll think it through.
+          </p>
+        </div>
+      )}
+
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+        {prevChats?.map((chat, i) => (
+          <div
+            key={i}
+            className={`flex ${chat.role === "user" ? "justify-end" : "justify-start"} animate-fade-up`}
+          >
+            {chat.role === "user" ? (
+              <div
+                className="max-w-[85%] md:max-w-md px-4 py-3 rounded-2xl text-sm leading-relaxed"
+                style={{
+                  background: "var(--surface-2)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text-primary)",
+                  borderBottomRightRadius: 4,
+                }}
+              >
+                {chat.content}
+              </div>
+            ) : (
+              <div className="w-full">
+                <div className="flex items-center gap-2 mb-2">
+                  <div
+                    className="w-5 h-5 rounded-full flex items-center justify-center"
+                    style={{ background: "rgba(99,102,241,0.15)" }}
+                  >
+                    <i className="fa-solid fa-wand-magic-sparkles text-xs" style={{ color: "#a5b4fc" }} />
                   </div>
-                ) : <div className="assitDiv" key={"notTyping"} >
-                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{prevChats[prevChats.length - 1].content}</ReactMarkdown>
+                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                    QueryFlow
+                  </span>
                 </div>
-              }
-            </>
-          )
-        }
-      </div>
-    </>
-  )
-}
+                <div className="prose-chat">
+                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                    {chat.content}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
 
-export default Chat
+        {isGenerating && (
+          <div className="flex justify-start animate-fade-in">
+            <div className="w-full">
+              <div className="flex items-center gap-2 mb-2">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "rgba(99,102,241,0.15)" }}
+                >
+                  <i className="fa-solid fa-wand-magic-sparkles text-xs" style={{ color: "#a5b4fc" }} />
+                </div>
+                <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                  QueryFlow
+                </span>
+                {!streamReply && (
+                  <span className="flex items-center gap-1 ml-1">
+                    <span className="typing-dot" />
+                    <span className="typing-dot" />
+                    <span className="typing-dot" />
+                  </span>
+                )}
+              </div>
+              {streamReply && (
+                <div className="prose-chat">
+                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                    {streamReply}
+                  </ReactMarkdown>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div ref={bottomRef} />
+      </div>
+    </div>
+  );
+};
+
+export default Chat;

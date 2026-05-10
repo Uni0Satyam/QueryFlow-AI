@@ -1,183 +1,78 @@
-# QueryFlow AI 🚀
+# QueryFlow AI
 
-QueryFlow AI is a **full‑stack AI-powered chat and query management application** inspired by ChatGPT. It allows users to authenticate securely, create conversation threads, send queries, and receive AI-generated responses in real time. The project is built using the **MERN stack**.
+QueryFlow AI is a full-stack chat application that combines secure user authentication with threaded AI-powered conversations.
 
----
+## What it does
 
-## ✨ Features
+- Sign up and log in users
+- Create, list, and view chat threads
+- Send user questions and receive AI responses
+- Remember previous chat context for ongoing conversations
+- Protect routes with token-based authentication
 
-* 🔐 **User Authentication & Authorization** (Token based)
-* 💬 **Chat-based AI Interface**
-* 🧵 **Conversation Threads** (multi-message support)
-* 🤖 **AI Assistant Responses**
-* ⚡ **Real-time UI updates**
-* 🗂️ **Modular Backend Architecture**
-* 🎨 **Modern React UI**
-* 🛡️ **Protected Routes (Frontend & Backend)**
+## Stack
 
----
+- Frontend: React + Vite
+- Backend: Node.js + Express
+- Database: MongoDB + Mongoose
 
-## 🏗️ Tech Stack
+## Setup
 
-### Frontend
-
-* **React (Vite)**
-* **React Router**
-* **Context API** (Global State)
-* **Auth API** (Protected State)
-* **CSS / Modern UI Styling**
-* **Font Awesome**
-
-### Backend
-
-* **Node.js**
-* **Express.js**
-* **MongoDB + Mongoose**
-* **bcrypt** (Password hashing)
-
----
-
-## 📁 Project Structure
-
-```
-QueryFlow/
-│
-├── frontend/
-│   ├── node_module/
-│   ├── public/
-│   ├── src/
-│   │   ├── animation/
-│   │   ├── landingpage/
-│   │   ├── context/
-│   │   ├── utils/
-│   │   ├── main.jsx
-│   │   └── Protected.jsx
-│   └── package.json
-│
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── server.js
-│
-└── README.md
-```
-
----
-
-## 🧠 Database Models
-
-### User
-
-* username
-* email
-* password (hashed)
-* token
-
-### Thread
-
-* threadId
-* title
-* messages[]
-* createdAt
-* updatedAt
-* author (ref: User)
-
-### Message
-
-* role (`user | assistant`)
-* content
-* timestamp
-* author
-
----
-
-## 🔑 Authentication Flow
-
-1. User signs up
-2. User logs in token - assigned
-3. Token stored on client (localStorage)
-4. Protected routes validate token
-5. Unauthorized users are redirected to Login
-
----
-
-## ⚙️ Environment Variables
-
-Create a `.env` file in the backend folder:
-
-```env
-PORT=8080
-MODEL_API=sk-or-v1-openrouterAPIKEY
-MONGO_Uri=your_mongodb_connection_string
-TOKEN_KEY=random_string
-SESSION_SECRET=your_session_secret
-```
-
----
-
-## ▶️ Getting Started
-
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/your-username/queryflow-ai.git
-cd queryflow-ai
-```
-
-### 2️⃣ Install Dependencies
-
-#### Backend
+1. In `backend/`:
 
 ```bash
 cd backend
 npm install
-npm run dev
 ```
 
-#### Frontend
+2. In `frontend/`:
 
 ```bash
 cd frontend
 npm install
+```
+
+3. Run both apps:
+
+```bash
+cd backend
 npm run dev
 ```
 
----
+```bash
+cd frontend
+npm run dev
+```
 
-## 🌐 API Endpoints (Sample)
+## Environment variables
 
-| Method | Endpoint         | Description   |
-| ------ | ---------------- | ------------- |
-| POST   | /auth/signup | Register user |
-| POST   | /auth/login  | Login user    |
-| POST   | /v1/chat        | Send message  |
-| GET    | /api/thread/:id  | Get thread    |
-| GET    | /api/thread/ | Get all thread    |
+Create `backend/.env` with:
 
----
+```env
+PORT=8080
+MONGO_URI=your_mongodb_connection_string
+TOKEN_KEY=random_string
+MODEL_API=your_ai_api_key
+```
 
-## 🔐 Protected Routes
+## Key API routes
 
-* Frontend routes are protected using a **Protected** component
-* Backend routes are secured using **auth middleware**
+- `POST /auth/signup` — register
+- `POST /auth/login` — login
+- `POST /v1/chat` — send a chat message
+- `GET /api/thread` — list threads
+- `GET /api/thread/:id` — get thread details
 
----
+## Project structure
 
-## 🎯 Future Enhancements
+- `backend/` — API server, auth middleware, controllers, models
+- `frontend/` — React app, routes, protected pages
 
-* 🔄 Streaming AI responses
-* 📜 Chat history search
-* 🌙 Dark / Light mode
-* 🧠 Multiple AI models support
+## Notes
 
----
+- Requires Node.js and MongoDB
+- Frontend and backend run separately
 
-## 👨‍💻 Author
+## Author
 
-**Satyam Kushwaha**
-
----
-
-⭐ If you like this project, don’t forget to star the repository!
+Satyam Kushwaha
