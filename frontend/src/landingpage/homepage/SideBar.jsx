@@ -66,9 +66,8 @@ const SideBar = () => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen flex flex-col transition-transform duration-300 ease-out ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 z-50 h-screen flex flex-col transition-transform duration-300 ease-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
         style={{
           width: 260,
           background: "var(--surface)",

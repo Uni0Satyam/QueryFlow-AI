@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             const data = await res.json();
             if (res.status === httpStatus.CREATED) {
                 return data.message;
-            } else{
+            } else {
                 throw data.message;
             }
         } catch (error) {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             if (res.status === httpStatus.OK) {
                 localStorage.setItem("token", data.token);
                 router("/home");
-            } else{
+            } else {
                 throw data.message;
             }
         } catch (error) {

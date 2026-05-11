@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import threadRoutes from './routes/thread.js';
 import chatRoutes from './routes/chat.js';
 import userRoutes from './routes/user.js';
+import visitRoutes from './routes/visit.js';
 import session from 'express-session';
 import helmet from 'helmet'
 
@@ -34,6 +35,7 @@ app.use(session(sessionOptions));
 app.use("/api", threadRoutes);
 app.use("/v1", chatRoutes);
 app.use("/auth", userRoutes);
+app.use("/visits", visitRoutes);
 
 const connectDb = async () => {
     try {

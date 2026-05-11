@@ -1,6 +1,54 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import servers from "../../environment.js";
+
+function useCountUp(target, duration = 1200) {
+  const [display, setDisplay] = useState(0);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    if (target === 0) return;
+    const start = performance.now();
+    const animate = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(eased * target));
+      if (progress < 1) rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [target, duration]);
+
+  return display;
+}
 
 export default function LandingPage() {
+  const [visitCount, setVisitCount] = useState(0);
+  const animatedCount = useCountUp(visitCount);
+
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        const hasVisited = localStorage.getItem("unique_visitor");
+        let endpoint = `${servers.prod}/visits/count`;
+        let method = "GET";
+
+        if (!hasVisited) {
+          endpoint = `${servers.prod}/visits/increment`;
+          method = "POST";
+          localStorage.setItem("unique_visitor", "true");
+        }
+
+        const response = await fetch(endpoint, { method });
+        const data = await response.json();
+        setVisitCount(data.count);
+      } catch (error) {
+        console.error('Error tracking visit:', error);
+      }
+    };
+    trackVisit();
+  }, []);
+
   const features = [
     {
       icon: "↗",
@@ -76,6 +124,14 @@ export default function LandingPage() {
         <div className="relative z-10 max-w-3xl mx-auto w-full">
           <div className="tag mb-6 animate-fade-up text-[0.65rem] md:text-xs">
             AI-powered · Real-time streaming · Open source
+          </div>
+
+          <div className="animate-fade-up delay-50 flex justify-center mb-6">
+            <div className="visit-badge">
+              <span className="visit-dot" />
+              <span className="visit-label">Visits</span>
+              <span className="visit-count">{animatedCount.toLocaleString()}</span>
+            </div>
           </div>
 
           <h1
